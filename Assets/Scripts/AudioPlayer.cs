@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundPlayer : MonoBehaviour
+public class AudioPlayer : MonoBehaviour
 {
     [SerializeField] private AudioSource _sound;
     [SerializeField] private Button _button;

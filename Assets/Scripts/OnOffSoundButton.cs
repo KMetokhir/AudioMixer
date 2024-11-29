@@ -4,25 +4,23 @@ using UnityEngine;
 
 public class OnOffSoundButton : MonoBehaviour
 {
-    [SerializeField] private Button _onOffButton;
-    [SerializeField] private List<SoundPlayer> _soundPlayers = new List<SoundPlayer>();
-    [SerializeField] private AudioSource _ambientSound;
-
-    private bool _isPressed = false;
+    [SerializeField] private Toggle _onOffToggle;
+    [SerializeField] private List<AudioPlayer> _soundPlayers = new List<AudioPlayer>();
+    [SerializeField] private AudioSource _ambientSound;  
 
     private void OnEnable()
-    {
-        _onOffButton.onClick.AddListener(OnButtonClick);
+    {      
+        _onOffToggle.onValueChanged.AddListener(delegate { OnValueChanged(); });
     }
 
     private void OnDisable()
     {
-        _onOffButton.onClick.RemoveListener(OnButtonClick);
+        _onOffToggle.onValueChanged.RemoveListener(delegate { OnValueChanged(); });
     }
 
-    private void OnButtonClick()
+    private void OnValueChanged()
     {
-        if (_isPressed)
+        if (_onOffToggle.isOn)
         {
             PlayAllSounds();
         }
@@ -30,8 +28,6 @@ public class OnOffSoundButton : MonoBehaviour
         {
             StopAllSounds();
         }
-
-        _isPressed = !_isPressed;
     }
 
     private void PlayAllSounds()
@@ -41,7 +37,7 @@ public class OnOffSoundButton : MonoBehaviour
             _ambientSound.Play();
         }
 
-        foreach (SoundPlayer soundPlayer in _soundPlayers)
+        foreach (AudioPlayer soundPlayer in _soundPlayers)
         {
             if (soundPlayer.SoundButtonClicked)
             {
@@ -57,7 +53,7 @@ public class OnOffSoundButton : MonoBehaviour
             _ambientSound.Stop();
         }
 
-        foreach (SoundPlayer soundPlayer in _soundPlayers)
+        foreach (AudioPlayer soundPlayer in _soundPlayers)
         {
             soundPlayer.SoundStop();
         }
